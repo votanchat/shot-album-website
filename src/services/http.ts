@@ -22,7 +22,9 @@ export class HttpService {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = API_BASE_URL + "/" + API_VERSION.V1;
+    const baseUrl = API_BASE_URL;
+    this.baseURL = baseUrl + "/" + API_VERSION.V1;
+
     this.instance = axios.create({
       baseURL: this.baseURL,
       timeout: 10000,
@@ -63,12 +65,17 @@ export class HttpService {
   ): Promise<ApiResponse<TResponse>> {
     try {
       const cleanedParams = params ? cleanParams(params as object) : undefined;
+      const fullUrl = this.baseURL + url;
+      console.log("[HttpService.get] Full URL:", fullUrl);
+      console.log("[HttpService.get] Params:", cleanedParams);
+
       const response = (await this.instance.get(url, {
         params: cleanedParams,
         ...config,
       })) as ApiResponse<TResponse>;
       return response;
     } catch (error) {
+      console.error("[HttpService.get] Error:", error);
       return Promise.reject(error);
     }
   }
