@@ -1,4 +1,4 @@
-import { getAlbum } from "@/services/apis/album";
+import AlbumClient from "@/components/AlbumClient";
 
 export default async function AlbumWebsitesPage({
   params,
@@ -6,7 +6,7 @@ export default async function AlbumWebsitesPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const album = await getAlbum(id);
-  console.log(album);
-  return <div>AlbumWebsitesPage</div>;
+  
+  return <AlbumClient domain={id} />;
 }
+

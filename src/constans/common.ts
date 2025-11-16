@@ -18,3 +18,17 @@ export const API_HEADERS = {
 export const API_PATH = {
   GET_ALBUM: (domain: string) => `/album-websites/domain/${domain}`,
 } as const;
+
+export enum FONT_FAMILY {
+  DEFAULT = "Arial",
+}
+
+export enum LANGUAGE {
+  VI = "vi",
+  EN = "en",
+}
+
+export enum INTERFACE_MODE {
+  LIGHT = "light",
+  DARK = "dark",
+}

@@ -29,7 +29,7 @@ export class HttpService {
       baseURL: this.baseURL,
       timeout: 10000,
       headers: API_HEADERS.COMMON,
-      withCredentials: true,
+      withCredentials: false,
     });
 
     this.initializeInterceptors();
@@ -65,17 +65,12 @@ export class HttpService {
   ): Promise<ApiResponse<TResponse>> {
     try {
       const cleanedParams = params ? cleanParams(params as object) : undefined;
-      const fullUrl = this.baseURL + url;
-      console.log("[HttpService.get] Full URL:", fullUrl);
-      console.log("[HttpService.get] Params:", cleanedParams);
-
       const response = (await this.instance.get(url, {
         params: cleanedParams,
         ...config,
       })) as ApiResponse<TResponse>;
       return response;
     } catch (error) {
-      console.error("[HttpService.get] Error:", error);
       return Promise.reject(error);
     }
   }
