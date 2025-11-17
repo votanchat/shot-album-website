@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import { ThemeContext, ThemeContextType } from "@/contexts/ThemeContext";
+import { AlbumContext, AlbumContextType } from "@/contexts/AlbumContext";
 
-export function useTheme(): ThemeContextType {
-  const context = useContext(ThemeContext);
+export function useTheme(): AlbumContextType {
+  const context = useContext(AlbumContext);
   
   if (!context) {
-    throw new Error("useTheme must be used within a ThemeProvider");
+    throw new Error("useTheme must be used within an AlbumProvider");
   }
   
   return context;

@@ -2,7 +2,14 @@
 
 import { FONT_FAMILY, INTERFACE_MODE, LANGUAGE } from "@/constans/common";
 import { InterfaceMode } from "@/types/common";
-import React, { createContext, JSX, useEffect, useState } from "react";
+import { AlbumDomainData } from "@/types/album";
+import React, {
+  createContext,
+  JSX,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 
 export interface ThemeColors {
   primary1: string;
@@ -11,7 +18,11 @@ export interface ThemeColors {
   primary4: string;
 }
 
-export interface ThemeContextType {
+export interface AlbumContextType {
+  // Album data
+  albumData: AlbumDomainData | null;
+
+  // Theme states
   interfaceMode: InterfaceMode;
   themeColors: ThemeColors;
   font: string;
@@ -34,46 +45,46 @@ const defaultThemeColors: ThemeColors = {
 const defaultFont = FONT_FAMILY.DEFAULT;
 const defaultLanguage = LANGUAGE.VI;
 
-export const ThemeContext = createContext<ThemeContextType>({
-  interfaceMode: INTERFACE_MODE.LIGHT,
-  themeColors: defaultThemeColors,
-  font: defaultFont,
-  language: defaultLanguage,
-  setTheme: () => {},
-});
+export const AlbumContext = createContext<AlbumContextType | undefined>(
+  undefined
+);
 
-interface ThemeProviderProps {
-  children: React.ReactNode;
-  initialMode?: InterfaceMode;
-  initialColors?: string[];
-  initialFont?: string;
-  initialLanguage?: string;
+interface AlbumProviderProps {
+  children: ReactNode;
+  albumData: AlbumDomainData | null;
 }
 
-export function ThemeProvider({
+export function AlbumProvider({
   children,
-  initialMode = INTERFACE_MODE.LIGHT,
-  initialColors,
-  initialFont,
-  initialLanguage,
-}: ThemeProviderProps): JSX.Element {
-  const [interfaceMode, setInterfaceMode] =
-    useState<InterfaceMode>(initialMode as InterfaceMode);
+  albumData,
+}: AlbumProviderProps): JSX.Element {
+  // Initialize states from albumData
+  const [interfaceMode, setInterfaceMode] = useState<InterfaceMode>(() => {
+    return (
+      (albumData?.detail?.interface as InterfaceMode) || INTERFACE_MODE.LIGHT
+    );
+  });
+
   const [themeColors, setThemeColors] = useState<ThemeColors>(() => {
-    if (initialColors && initialColors.length >= 4) {
+    const theme = albumData?.detail?.theme;
+    if (theme && Array.isArray(theme) && theme.length >= 4) {
       return {
-        primary1: initialColors[0],
-        primary2: initialColors[1],
-        primary3: initialColors[2],
-        primary4: initialColors[3],
+        primary1: theme[0],
+        primary2: theme[1],
+        primary3: theme[2],
+        primary4: theme[3],
       };
     }
     return defaultThemeColors;
   });
-  const [font, setFont] = useState<string>(initialFont || defaultFont);
-  const [language, setLanguage] = useState<string>(
-    initialLanguage || defaultLanguage
-  );
+
+  const [font, setFont] = useState<string>(() => {
+    return albumData?.detail?.font || defaultFont;
+  });
+
+  const [language, setLanguage] = useState<string>(() => {
+    return albumData?.detail?.language || defaultLanguage;
+  });
 
   const setTheme = (
     mode: InterfaceMode,
@@ -98,6 +109,7 @@ export function ThemeProvider({
     }
   };
 
+  // Apply interface mode and CSS variables
   useEffect(() => {
     const root = document.documentElement;
 
@@ -112,9 +124,10 @@ export function ThemeProvider({
     root.style.setProperty("--color-primary-4", themeColors.primary4);
 
     // Set primary color based on interface mode
-    // Dark mode uses the darkest color (primary1)
     const primaryColor =
-      interfaceMode === INTERFACE_MODE.DARK ? themeColors.primary1 : themeColors.primary2;
+      interfaceMode === INTERFACE_MODE.DARK
+        ? themeColors.primary1
+        : themeColors.primary2;
     root.style.setProperty("--color-primary", primaryColor);
   }, [interfaceMode, themeColors]);
 
@@ -153,11 +166,17 @@ export function ThemeProvider({
   }, [language]);
 
   return (
-    <ThemeContext.Provider
-      value={{ interfaceMode, themeColors, font, language, setTheme }}
+    <AlbumContext.Provider
+      value={{
+        albumData,
+        interfaceMode,
+        themeColors,
+        font,
+        language,
+        setTheme,
+      }}
     >
       {children}
-    </ThemeContext.Provider>
+    </AlbumContext.Provider>
   );
 }
-
