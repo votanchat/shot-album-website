@@ -1,12 +1,14 @@
 "use client";
 
 import { useTheme } from "@/hooks/useTheme";
+import { useTranslation } from "@/hooks/useTranslation";
 import Image from "next/image";
 import { MediaFile } from "@/types/album";
 import { JSX } from "react";
 
 export default function HighlightSection(): JSX.Element | null {
   const { albumData } = useTheme();
+  const t = useTranslation();
 
   if (!albumData) {
     return null;
@@ -27,9 +29,11 @@ export default function HighlightSection(): JSX.Element | null {
     <section className="py-20 px-4">
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">Highlight</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            {t.highlight.title}
+          </h2>
           <p className="text-lg md:text-xl opacity-80">
-            Những khoảnh khắc đáng nhớ nhất
+            {t.highlight.description}
           </p>
         </div>
 
