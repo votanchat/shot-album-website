@@ -45,9 +45,11 @@ export const vi = {
 
   // Memory Section
   memory: {
-    title: "Memory",
+    title: "Ngày Kỷ niệm của Tôi",
     description: "Những kỷ niệm đáng nhớ",
     noMemories: "Chưa có kỷ niệm nào được thêm vào",
+    date: "Ngày",
+    location: "Địa điểm",
   },
 
   // Contact Section

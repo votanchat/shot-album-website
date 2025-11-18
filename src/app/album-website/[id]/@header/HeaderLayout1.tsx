@@ -17,7 +17,7 @@ export default function HeaderLayout1({
   const t = getTranslation(language);
 
   return (
-    <section className="relative bg-white flex items-center overflow-hidden">
+    <section className="relative bg-white flex items-center h-[800px] overflow-hidden">
       {/* Background Pattern */}
       <div
         className="absolute inset-0 w-full h-full opacity-30"

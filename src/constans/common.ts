@@ -38,3 +38,25 @@ export enum HEADER_LAYOUT {
   LAYOUT_2 = "layout-2",
   LAYOUT_3 = "layout-3",
 }
+
+export type HeaderLayout = (typeof HEADER_LAYOUT)[keyof typeof HEADER_LAYOUT];
+
+/**
+ * Layout constants for other sections
+ */
+export const ABOUT_LAYOUT = {
+  LAYOUT_1: "layout-1",
+} as const;
+
+export const HIGHLIGHT_LAYOUT = {
+  LAYOUT_1: "layout-1",
+} as const;
+
+export const GALLERY_LAYOUT = {
+  GRID: "grid",
+} as const;
+
+export const MEMORY_LAYOUT = {
+  LAYOUT_1: "layout-1",
+  LAYOUT_2: "layout-2",
+} as const;

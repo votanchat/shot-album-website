@@ -17,9 +17,10 @@ export type AlbumInfo = {
 
 export type AlbumDetail = {
   font: string;
-  event: {
+  event?: {
     date: string;
     location: string;
+    image?: MediaFile;
   };
   theme: string[];
   title: string;

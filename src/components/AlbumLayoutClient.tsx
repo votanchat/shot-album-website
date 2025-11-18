@@ -35,10 +35,10 @@ export default function AlbumLayoutClient({
   return (
     <div className="min-h-screen">
       {sections.header && header}
+      {sections.memory && memory}
       {sections.about && about}
       {sections.highlight && highlight}
       {sections.gallery && gallery}
-      {sections.memory && memory}
       {children}
     </div>
   );

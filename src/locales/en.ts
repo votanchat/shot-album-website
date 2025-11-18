@@ -47,9 +47,11 @@ export const en: TranslationKeys = {
 
   // Memory Section
   memory: {
-    title: "Memory",
+    title: "My Memory Day",
     description: "Memorable moments",
     noMemories: "No memories added yet",
+    date: "Date",
+    location: "Location",
   },
 
   // Contact Section
