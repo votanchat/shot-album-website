@@ -46,6 +46,7 @@ export type HeaderLayout = (typeof HEADER_LAYOUT)[keyof typeof HEADER_LAYOUT];
  */
 export const ABOUT_LAYOUT = {
   LAYOUT_1: "layout-1",
+  LAYOUT_2: "layout-2",
 } as const;
 
 export const HIGHLIGHT_LAYOUT = {

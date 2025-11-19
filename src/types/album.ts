@@ -56,10 +56,16 @@ export type HeroSection = {
   description: string;
 };
 
+export type AboutSubContent = {
+  image: MediaFile[];
+  title: string;
+  content: string;
+};
+
 export type AboutSection = {
   title: string;
   images: MediaFile[];
-  subContent: unknown[];
+  subContent: AboutSubContent[];
   description: string;
 };
 

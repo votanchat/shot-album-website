@@ -2,6 +2,9 @@
 
 import { useTheme } from "@/hooks/useTheme";
 import { JSX } from "react";
+import AboutLayout1 from "./AboutLayout1";
+import AboutLayout2 from "./AboutLayout2";
+import { ABOUT_LAYOUT } from "@/constans/common";
 
 export default function AboutSection(): JSX.Element | null {
   const { albumData } = useTheme();
@@ -13,41 +16,14 @@ export default function AboutSection(): JSX.Element | null {
   const { about } = albumData.detail.content;
   const { layout } = albumData.detail;
 
-  return (
-    <section className="py-20 px-4">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">{about.title}</h2>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto opacity-80">
-            {about.description}
-          </p>
-        </div>
-
-        {/* Sub Content */}
-        {about.subContent && about.subContent.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-            {about.subContent.map((item, index) => (
-              <div
-                key={index}
-                className="p-6 rounded-lg"
-                style={{
-                  backgroundColor: "var(--color-primary-4)",
-                }}
-              >
-                <div className="text-center">
-                  {/* Placeholder for sub content */}
-                  <p>Sub content {index + 1}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Layout indicator */}
-        <div className="text-xs opacity-30 text-center mt-8">
-          Layout: {layout.about}
-        </div>
-      </div>
-    </section>
-  );
+  // Render appropriate layout based on layout.about setting
+  switch (layout.about) {
+    case ABOUT_LAYOUT.LAYOUT_1:
+      return <AboutLayout1 about={about} />;
+    case ABOUT_LAYOUT.LAYOUT_2:
+      return <AboutLayout2 about={about} />;
+    default:
+      // Default to layout-1 if no match
+      return <AboutLayout1 about={about} />;
+  }
 }
