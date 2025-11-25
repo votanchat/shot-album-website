@@ -51,6 +51,8 @@ export const ABOUT_LAYOUT = {
 
 export const HIGHLIGHT_LAYOUT = {
   LAYOUT_1: "layout-1",
+  LAYOUT_2: "layout-2",
+  LAYOUT_3: "layout-3",
 } as const;
 
 export const GALLERY_LAYOUT = {

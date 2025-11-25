@@ -48,6 +48,7 @@ export type AlbumContent = {
   about: AboutSection;
   contact: ContactSection;
   gallery: GallerySection;
+  highlight: HighlightSection;
 };
 
 export type HeroSection = {
@@ -75,6 +76,12 @@ export type ContactSection = {
 };
 
 export type GallerySection = {
+  title: string;
+  images: MediaFile[];
+  description: string;
+};
+
+export type HighlightSection = {
   title: string;
   images: MediaFile[];
   description: string;
