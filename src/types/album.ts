@@ -102,3 +102,29 @@ export type MediaFile = {
   comments_count: number;
   is_recommended: number;
 };
+
+export type PaginationMeta = {
+  current_page: number;
+  from: number;
+  last_page: number;
+  per_page: number;
+  to: number;
+  total: number;
+};
+
+export type PaginationLinks = {
+  first: string;
+  last: string;
+  prev: string | null;
+  next: string | null;
+};
+
+export type GalleryImagesResponse = {
+  id: string;
+  name: string;
+  files: {
+    data: MediaFile[];
+    meta: PaginationMeta;
+    links: PaginationLinks;
+  };
+};

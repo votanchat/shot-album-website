@@ -17,6 +17,7 @@ export const API_HEADERS = {
 
 export const API_PATH = {
   GET_ALBUM: (domain: string) => `/album-websites/domain/${domain}`,
+  GET_GALLERY_IMAGES: (albumId: string) => `/client/albums/${albumId}/public`,
 } as const;
 
 export enum FONT_FAMILY {
@@ -56,7 +57,9 @@ export const HIGHLIGHT_LAYOUT = {
 } as const;
 
 export const GALLERY_LAYOUT = {
-  GRID: "grid",
+  LAYOUT_1: "layout-1",
+  LAYOUT_2: "layout-2",
+  LAYOUT_3: "layout-3",
 } as const;
 
 export const MEMORY_LAYOUT = {
