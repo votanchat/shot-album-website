@@ -1,8 +1,12 @@
+"use client";
+
 import { HeroSection } from "@/types/album";
 import Image from "next/image";
 import { JSX } from "react";
 import { Button } from "@/components/ui/Button";
 import { getTranslation } from "@/utils/translation";
+import { useTheme } from "@/hooks/useTheme";
+import { INTERFACE_MODE } from "@/constans/common";
 
 interface HeaderLayout1Props {
   hero: HeroSection;
@@ -13,21 +17,29 @@ export default function HeaderLayout1({
   hero,
   language,
 }: HeaderLayout1Props): JSX.Element {
+  const { interfaceMode, themeColors } = useTheme();
   const heroImage = hero.image?.[0];
   const t = getTranslation(language);
 
+  const isDark = interfaceMode === INTERFACE_MODE.DARK;
+
   return (
-    <section className="relative bg-white flex items-center h-[800px] overflow-hidden">
-      {/* Background Pattern */}
-      <div
-        className="absolute inset-0 w-full h-full opacity-30"
-        style={{
-          backgroundImage: "url('/images/hero-header.svg')",
-          backgroundSize: "100% 100%",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      />
+    <section
+      className="relative flex items-center h-[800px] overflow-hidden"
+      style={{
+        backgroundColor: isDark ? themeColors.primary1 : "white",
+      }}
+    >
+      {/* Background Pattern - Only visible in light mode */}
+      {!isDark && (
+        <div
+          className="absolute inset-0 w-full h-full opacity-30 bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/images/hero-header.svg')",
+            backgroundSize: "100% 100%",
+          }}
+        />
+      )}
 
       {/* Container */}
       <div className="relative z-10 px-20 py-16 pb-24 w-full">
@@ -39,12 +51,16 @@ export default function HeaderLayout1({
               <h1
                 className="text-4xl md:text-5xl lg:text-[64px] leading-tight lg:leading-[72px] font-bold"
                 style={{
-                  color: "var(--color-primary-1)",
+                  color: isDark ? "white" : themeColors.primary1,
                 }}
               >
                 {hero.title}
               </h1>
-              <p className="text-lg lg:text-[20px] leading-relaxed lg:leading-[30px] font-normal opacity-80">
+              <p
+                className={`text-lg lg:text-[20px] leading-relaxed lg:leading-[30px] font-normal opacity-80 ${
+                  isDark ? "text-white" : ""
+                }`}
+              >
                 {hero.description}
               </p>
             </div>
@@ -63,15 +79,12 @@ export default function HeaderLayout1({
 
           {/* Right Side - Image */}
           {heroImage && (
-            <div className="w-full lg:w-[560px] h-[400px] lg:h-[640px] relative">
+            <div className="w-full lg:w-[560px] h-[400px] lg:h-[640px] relative rounded-tl-none rounded-tr-[64px] rounded-br-none rounded-bl-[64px] overflow-hidden">
               <Image
                 src={heroImage.url}
                 alt={hero.title || "Hero image"}
                 fill
                 className="object-cover"
-                style={{
-                  borderRadius: "0px 64px 0px 64px",
-                }}
                 priority
               />
             </div>

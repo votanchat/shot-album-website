@@ -67,3 +67,90 @@ h1, h2, h3, h4, h5, h6 {
 p, span, div {
   font-family: var(--font-dynamic), Arial, Helvetica, sans-serif;
 }
+
+/* Custom utility classes for theme colors */
+.bg-primary-1 {
+  background-color: var(--color-primary-1);
+}
+
+.bg-primary-2 {
+  background-color: var(--color-primary-2);
+}
+
+.bg-primary-3 {
+  background-color: var(--color-primary-3);
+}
+
+.bg-primary-4 {
+  background-color: var(--color-primary-4);
+}
+
+.text-primary-1 {
+  color: var(--color-primary-1);
+}
+
+.text-primary-2 {
+  color: var(--color-primary-2);
+}
+
+.text-primary-3 {
+  color: var(--color-primary-3);
+}
+
+.text-primary-4 {
+  color: var(--color-primary-4);
+}
+
+/* Dark mode overrides - explicit selectors */
+:root.dark .dark\:bg-primary-1 {
+  background-color: var(--color-primary-1) !important;
+}
+
+:root.dark .dark\:text-white {
+  color: white !important;
+}
+
+:root.dark .dark\:hidden {
+  display: none !important;
+}
+
+/* Ensure light mode keeps default styles */
+:root.light .dark\:bg-primary-1 {
+  background-color: transparent;
+}
+
+:root.light .dark\:text-white {
+  color: inherit;
+}
+
+:root.light .dark\:hidden {
+  display: block;
+}
+
+/* Floating animations for decorative icons */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes float-delayed {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 5s ease-in-out infinite;
+  animation-delay: 0.5s;
+}

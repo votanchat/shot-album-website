@@ -1,8 +1,12 @@
+"use client";
+
 import { HeroSection } from "@/types/album";
 import Image from "next/image";
 import { JSX } from "react";
 import { Button } from "@/components/ui/Button";
 import { getTranslation } from "@/utils/translation";
+import { useTheme } from "@/hooks/useTheme";
+import { INTERFACE_MODE } from "@/constans/common";
 
 interface HeaderLayout2Props {
   hero: HeroSection;
@@ -13,32 +17,42 @@ export default function HeaderLayout2({
   hero,
   language,
 }: HeaderLayout2Props): JSX.Element {
+  const { interfaceMode, themeColors } = useTheme();
   const heroImage = hero.image?.[0];
   const t = getTranslation(language);
 
-  return (
-    <section className="relative h-[760px] w-full flex items-center justify-center overflow-hidden">
-      {/* Background Image - Full Screen */}
-      {heroImage && (
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={heroImage.url}
-            alt={hero.title || "Hero image"}
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
-      )}
+  const isDark = interfaceMode === INTERFACE_MODE.DARK;
 
-      {/* Overlay - covers entire background */}
-      <div
-        className="absolute inset-0 z-1"
-        style={{
-          background:
-            "linear-gradient(to bottom, rgba(74, 85, 104, 0.7) 0%, rgba(74, 85, 104, 0.6) 50%, rgba(74, 85, 104, 0.5) 100%)",
-        }}
-      />
+  return (
+    <section
+      className="relative h-[760px] w-full flex items-center justify-center overflow-hidden"
+      style={{
+        backgroundColor: isDark ? themeColors.primary1 : undefined,
+      }}
+    >
+      {/* Background Image - Only visible in light mode */}
+      {!isDark && heroImage && (
+        <>
+          <div className="absolute inset-0 z-0">
+            <Image
+              src={heroImage.url}
+              alt={hero.title || "Hero image"}
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+
+          {/* Overlay - covers entire background */}
+          <div
+            className="absolute inset-0 z-1"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(74, 85, 104, 0.7) 0%, rgba(74, 85, 104, 0.6) 50%, rgba(74, 85, 104, 0.5) 100%)",
+            }}
+          />
+        </>
+      )}
 
       {/* Content */}
       <div className="relative z-10 w-full h-[760px] pt-16 pb-24 flex items-center justify-center">

@@ -4,6 +4,8 @@ import Image from "next/image";
 import { JSX, useState } from "react";
 import { MediaFile } from "@/types/album";
 import ImageLightbox from "@/components/ImageLightbox";
+import { useTheme } from "@/hooks/useTheme";
+import { INTERFACE_MODE } from "@/constans/common";
 
 interface GalleryLayout3Props {
     images: MediaFile[];
@@ -16,6 +18,8 @@ export default function GalleryLayout3({
     title,
     description,
 }: GalleryLayout3Props): JSX.Element {
+    const { interfaceMode, themeColors } = useTheme();
+    const isDark = interfaceMode === INTERFACE_MODE.DARK;
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -44,14 +48,25 @@ export default function GalleryLayout3({
     const gridImages = images?.slice(1);
 
     return (
-        <section className="py-20 px-4">
+        <section
+            className="py-20 px-4 -mt-px"
+            style={{
+                backgroundColor: isDark ? themeColors.primary1 : "white",
+            }}
+        >
             <div className="container mx-auto max-w-7xl">
                 {/* Title Section */}
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                    <h2
+                        className="text-4xl md:text-5xl font-bold mb-6"
+                        style={{ color: isDark ? "white" : "#101828" }}
+                    >
                         {title}
                     </h2>
-                    <p className="text-lg md:text-xl opacity-80">
+                    <p
+                        className="text-lg md:text-xl opacity-80"
+                        style={{ color: isDark ? "white" : "#344054" }}
+                    >
                         {description}
                     </p>
                 </div>
@@ -61,14 +76,17 @@ export default function GalleryLayout3({
                     {/* Featured Image - Left Side */}
                     {featuredImage && (
                         <div
-                            className="md:col-span-7 relative aspect-[4/5] md:aspect-[3/4] overflow-hidden group cursor-pointer shadow-xl hover:shadow-2xl transition-shadow duration-300"
+                            className="md:col-span-7 relative aspect-[4/5] md:aspect-[3/4] overflow-hidden group cursor-pointer shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gray-200"
                             onClick={() => openLightbox(0)}
                         >
                             <Image
                                 src={featuredImage.url}
                                 alt={featuredImage.file_name}
                                 fill
-                                className="object-cover transition-all duration-500 group-hover:scale-105"
+                                className="object-cover transition-all duration-300 group-hover:scale-105"
+                                priority
+                                sizes="(max-width: 768px) 100vw, 58vw"
+                                quality={90}
                             />
 
                             {/* Featured Overlay */}
@@ -93,34 +111,41 @@ export default function GalleryLayout3({
 
                     {/* Grid Images - Right Side */}
                     <div className="md:col-span-5 grid grid-cols-2 gap-6">
-                        {gridImages?.map((image, idx) => (
-                            <div
-                                key={image.id}
-                                className="relative aspect-square overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-300"
-                                onClick={() => openLightbox(idx + 1)}
-                            >
-                                <Image
-                                    src={image.url}
-                                    alt={image.file_name}
-                                    fill
-                                    className="object-cover transition-all duration-500 group-hover:scale-110"
-                                />
+                        {gridImages?.map((image, idx) => {
+                            const shouldPrioritize = idx < 4;
+                            return (
+                                <div
+                                    key={image.id}
+                                    className="relative aspect-square overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-gray-200"
+                                    onClick={() => openLightbox(idx + 1)}
+                                >
+                                    <Image
+                                        src={image.url}
+                                        alt={image.file_name}
+                                        fill
+                                        className="object-cover transition-all duration-300 group-hover:scale-110"
+                                        loading={shouldPrioritize ? "eager" : "lazy"}
+                                        priority={shouldPrioritize}
+                                        sizes="(max-width: 768px) 50vw, 21vw"
+                                        quality={85}
+                                    />
 
-                                {/* Overlay on hover */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-start p-4">
-                                    <div className="text-white">
-                                        <p className="text-xs font-medium line-clamp-2 mb-1">
-                                            {image.file_name}
-                                        </p>
-                                        {image.comments_count > 0 && (
-                                            <p className="text-xs opacity-80">
-                                                💬 {image.comments_count}
+                                    {/* Overlay on hover */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-start p-4">
+                                        <div className="text-white">
+                                            <p className="text-xs font-medium line-clamp-2 mb-1">
+                                                {image.file_name}
                                             </p>
-                                        )}
+                                            {image.comments_count > 0 && (
+                                                <p className="text-xs opacity-80">
+                                                    💬 {image.comments_count}
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </div>

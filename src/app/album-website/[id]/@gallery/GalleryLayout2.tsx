@@ -4,6 +4,8 @@ import Image from "next/image";
 import { JSX, useState } from "react";
 import { MediaFile } from "@/types/album";
 import ImageLightbox from "@/components/ImageLightbox";
+import { useTheme } from "@/hooks/useTheme";
+import { INTERFACE_MODE } from "@/constans/common";
 
 interface GalleryLayout2Props {
     images: MediaFile[];
@@ -16,6 +18,8 @@ export default function GalleryLayout2({
     title,
     description,
 }: GalleryLayout2Props): JSX.Element {
+    const { interfaceMode, themeColors } = useTheme();
+    const isDark = interfaceMode === INTERFACE_MODE.DARK;
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -41,7 +45,12 @@ export default function GalleryLayout2({
     };
 
     return (
-        <section className="py-24 px-20 relative">
+        <section
+            className="py-24 px-20 relative -mt-px"
+            style={{
+                backgroundColor: isDark ? themeColors.primary1 : "white",
+            }}
+        >
             {/* Decorative Icons */}
             <div className="absolute top-0 left-0 w-48 h-48 pointer-events-none">
                 <Image
@@ -63,61 +72,74 @@ export default function GalleryLayout2({
             <div className="">
                 {/* Title Section */}
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                    <h2
+                        className="text-4xl md:text-5xl font-bold mb-6"
+                        style={{ color: isDark ? "white" : "#101828" }}
+                    >
                         {title}
                     </h2>
-                    <p className="text-lg md:text-xl opacity-80 max-w-[768px] mx-auto">
+                    <p
+                        className="text-lg md:text-xl opacity-80 max-w-[768px] mx-auto"
+                        style={{ color: isDark ? "white" : "#344054" }}
+                    >
                         {description}
                     </p>
                 </div>
 
                 {/* Masonry Layout */}
                 <div className="columns-1 sm:columns-2 md:columns-3 gap-6">
-                    {images?.map((image, index) => (
-                        <div
-                            key={image.id}
-                            className="break-inside-avoid mb-6"
-                        >
+                    {images?.map((image, index) => {
+                        const shouldPrioritize = index < 6;
+                        return (
                             <div
-                                className="relative overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300"
-                                onClick={() => openLightbox(index)}
+                                key={image.id}
+                                className="break-inside-avoid mb-6"
                             >
                                 <div
-                                    className="relative w-full"
-                                    style={{
-                                        aspectRatio:
-                                            index % 3 === 0
-                                                ? "3/4"
-                                                : index % 3 === 1
-                                                  ? "4/3"
-                                                  : "1/1",
-                                    }}
+                                    className="relative overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300"
+                                    onClick={() => openLightbox(index)}
                                 >
-                                    <Image
-                                        src={image.url}
-                                        alt={image.file_name}
-                                        fill
-                                        className="object-cover transition-all duration-500 group-hover:scale-105"
-                                    />
+                                    <div
+                                        className="relative w-full bg-gray-200"
+                                        style={{
+                                            aspectRatio:
+                                                index % 3 === 0
+                                                    ? "3/4"
+                                                    : index % 3 === 1
+                                                      ? "4/3"
+                                                      : "1/1",
+                                        }}
+                                    >
+                                        <Image
+                                            src={image.url}
+                                            alt={image.file_name}
+                                            fill
+                                            className="object-cover transition-all duration-300 group-hover:scale-105"
+                                            loading={shouldPrioritize ? "eager" : "lazy"}
+                                            priority={shouldPrioritize}
+                                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                                            quality={85}
+                                        />
 
-                                    {/* Overlay on hover */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-start p-4">
-                                        <div className="text-white">
-                                            <p className="text-sm font-medium line-clamp-2 mb-1">
-                                                {image.file_name}
-                                            </p>
-                                            {image.comments_count > 0 && (
-                                                <p className="text-xs opacity-80">
-                                                    💬 {image.comments_count}{" "}
-                                                    comments
+                                        {/* Overlay on hover */}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-start p-4">
+                                            <div className="text-white">
+                                                <p className="text-sm font-medium line-clamp-2 mb-1">
+                                                    {image.file_name}
                                                 </p>
-                                            )}
+                                                {image.comments_count > 0 && (
+                                                    <p className="text-xs opacity-80">
+                                                        💬 {image.comments_count}{" "}
+                                                        comments
+                                                    </p>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
 

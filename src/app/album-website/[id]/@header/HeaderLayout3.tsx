@@ -1,8 +1,12 @@
+"use client";
+
 import { HeroSection } from "@/types/album";
 import Image from "next/image";
 import { JSX } from "react";
 import { Button } from "@/components/ui/Button";
 import { getTranslation } from "@/utils/translation";
+import { useTheme } from "@/hooks/useTheme";
+import { INTERFACE_MODE } from "@/constans/common";
 
 interface HeaderLayout3Props {
   hero: HeroSection;
@@ -13,11 +17,19 @@ export default function HeaderLayout3({
   hero,
   language,
 }: HeaderLayout3Props): JSX.Element {
+  const { interfaceMode, themeColors } = useTheme();
   const heroImage = hero.image?.[0];
   const t = getTranslation(language);
 
+  const isDark = interfaceMode === INTERFACE_MODE.DARK;
+
   return (
-    <section className="bg-white relative">
+    <section
+      className="relative"
+      style={{
+        backgroundColor: isDark ? themeColors.primary1 : "white",
+      }}
+    >
       {/* Decorative Elements - Star (Top Left) */}
       <div className="absolute top-20 left-20 w-16 h-16 opacity-80 z-10">
         <Image
@@ -70,7 +82,7 @@ export default function HeaderLayout3({
             <h1
               className="text-3xl md:text-4xl lg:text-5xl font-bold text-center"
               style={{
-                color: "#040707",
+                color: isDark ? "white" : "#040707",
               }}
             >
               {hero.title}
@@ -78,7 +90,7 @@ export default function HeaderLayout3({
             <p
               className="text-base md:text-lg text-center max-w-2xl"
               style={{
-                color: "#344054",
+                color: isDark ? "white" : "#344054",
               }}
             >
               {hero.description}

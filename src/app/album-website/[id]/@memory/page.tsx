@@ -2,8 +2,8 @@
 
 import { useTheme } from "@/hooks/useTheme";
 import { JSX } from "react";
-import MemoryLayout1 from "./MemoryLayout1";
-import MemoryLayout2 from "./MemoryLayout2";
+import MemoryLayout1 from "./MemoryLayout2";
+import MemoryLayout2 from "./MemoryLayout1";
 import { MEMORY_LAYOUT } from "@/constans/common";
 
 export default function MemorySection(): JSX.Element | null {

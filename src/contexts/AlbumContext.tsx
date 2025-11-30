@@ -123,12 +123,8 @@ export function AlbumProvider({
     root.style.setProperty("--color-primary-3", themeColors.primary3);
     root.style.setProperty("--color-primary-4", themeColors.primary4);
 
-    // Set primary color based on interface mode
-    const primaryColor =
-      interfaceMode === INTERFACE_MODE.DARK
-        ? themeColors.primary1
-        : themeColors.primary2;
-    root.style.setProperty("--color-primary", primaryColor);
+    // Set primary color - always use primary2 for buttons
+    root.style.setProperty("--color-primary", themeColors.primary2);
   }, [interfaceMode, themeColors]);
 
   // Load Google Font dynamically

@@ -1,6 +1,10 @@
+"use client";
+
 import { JSX } from "react";
 import Image from "next/image";
 import { MediaFile } from "@/types/album";
+import { useTheme } from "@/hooks/useTheme";
+import { INTERFACE_MODE } from "@/constans/common";
 
 interface HighlightLayout2Props {
   images: MediaFile[];
@@ -13,6 +17,9 @@ export default function HighlightLayout2({
   title,
   description,
 }: HighlightLayout2Props): JSX.Element {
+  const { interfaceMode, themeColors } = useTheme();
+  const isDark = interfaceMode === INTERFACE_MODE.DARK;
+
   // Config for 5 images: rotation 6, 4, 0, -4, -6 và spacing 48px
   // Kích thước ảnh: 330px × 450px
   const imageConfigs = [
@@ -76,37 +83,31 @@ export default function HighlightLayout2({
 
   return (
     <section
-      className="relative overflow-hidden"
-      style={{ backgroundColor: "#f5f4f0" }}
+      className="relative overflow-hidden -mt-px"
+      style={{
+        backgroundColor:
+          interfaceMode === INTERFACE_MODE.DARK
+            ? themeColors.primary1
+            : "#f5f4f0",
+      }}
     >
-      <div
-        className="flex flex-col gap-10"
-        style={{
-          paddingTop: "100px",
-          paddingBottom: "100px",
-        }}
-      >
+      <div className="flex flex-col gap-10 py-24">
         {/* Title & Description */}
-        <div className="relative w-full max-w-[1280px] px-20 mx-auto">
+        <div className="relative w-full max-w-7xl px-20 mx-auto">
           <div className="flex flex-col gap-8">
-            <div
-              className="flex flex-col gap-5 mx-auto"
-              style={{ width: "768px" }}
-            >
+            <div className="flex flex-col gap-5 mx-auto max-w-3xl">
               <h2
-                className="text-center font-bold text-[#101828]"
+                className="text-center font-bold text-5xl leading-tight"
                 style={{
-                  fontSize: "48px",
-                  lineHeight: "44px",
+                  color: isDark ? "white" : "#101828",
                 }}
               >
                 {title}
               </h2>
               <p
-                className="text-center text-[#344054]"
+                className="text-center text-xl leading-relaxed"
                 style={{
-                  fontSize: "22px",
-                  lineHeight: "160%",
+                  color: isDark ? "white" : "#344054",
                 }}
               >
                 {description}

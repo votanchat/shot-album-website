@@ -2,7 +2,7 @@
 
 import { useTheme } from "@/hooks/useTheme";
 import { JSX, useEffect, useState, useRef, useCallback } from "react";
-import { GALLERY_LAYOUT } from "@/constans/common";
+import { GALLERY_LAYOUT, INTERFACE_MODE } from "@/constans/common";
 import { getGalleryImages } from "@/services/apis/album";
 import { MediaFile } from "@/types/album";
 import GalleryLayout1 from "./GalleryLayout1";
@@ -10,7 +10,8 @@ import GalleryLayout2 from "./GalleryLayout2";
 import GalleryLayout3 from "./GalleryLayout3";
 
 export default function GallerySection(): JSX.Element | null {
-  const { albumData } = useTheme();
+  const { albumData, interfaceMode, themeColors } = useTheme();
+  const isDark = interfaceMode === INTERFACE_MODE.DARK;
   const [images, setImages] = useState<MediaFile[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
@@ -113,13 +114,24 @@ export default function GallerySection(): JSX.Element | null {
   // Loading state
   if (isLoading) {
     return (
-      <section className="py-20 px-4">
+      <section
+        className="py-20 px-4"
+        style={{
+          backgroundColor: isDark ? themeColors.primary1 : "white",
+        }}
+      >
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2
+              className="text-4xl md:text-5xl font-bold mb-6"
+              style={{ color: isDark ? "white" : "#101828" }}
+            >
               {gallery.title}
             </h2>
-            <p className="text-lg md:text-xl opacity-80">
+            <p
+              className="text-lg md:text-xl opacity-80"
+              style={{ color: isDark ? "white" : "#344054" }}
+            >
               {gallery.description}
             </p>
           </div>
@@ -127,7 +139,10 @@ export default function GallerySection(): JSX.Element | null {
             {[...Array(6)].map((_, idx) => (
               <div
                 key={idx}
-                className="relative aspect-square bg-gray-200 dark:bg-gray-700 rounded-2xl animate-pulse"
+                className="relative aspect-square rounded-2xl animate-pulse"
+                style={{
+                  backgroundColor: isDark ? "#4B5563" : "#E5E7EB",
+                }}
               />
             ))}
           </div>
@@ -139,18 +154,34 @@ export default function GallerySection(): JSX.Element | null {
   // Error state
   if (error) {
     return (
-      <section className="py-20 px-4">
+      <section
+        className="py-20 px-4"
+        style={{
+          backgroundColor: isDark ? themeColors.primary1 : "white",
+        }}
+      >
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2
+              className="text-4xl md:text-5xl font-bold mb-6"
+              style={{ color: isDark ? "white" : "#101828" }}
+            >
               {gallery.title}
             </h2>
-            <p className="text-lg md:text-xl opacity-80">
+            <p
+              className="text-lg md:text-xl opacity-80"
+              style={{ color: isDark ? "white" : "#344054" }}
+            >
               {gallery.description}
             </p>
           </div>
           <div className="text-center py-12">
-            <p className="text-lg opacity-60">{error}</p>
+            <p
+              className="text-lg opacity-60"
+              style={{ color: isDark ? "white" : "#6B7280" }}
+            >
+              {error}
+            </p>
           </div>
         </div>
       </section>
@@ -160,18 +191,34 @@ export default function GallerySection(): JSX.Element | null {
   // Empty state
   if (!images || images.length === 0) {
     return (
-      <section className="py-20 px-4">
+      <section
+        className="py-20 px-4"
+        style={{
+          backgroundColor: isDark ? themeColors.primary1 : "white",
+        }}
+      >
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2
+              className="text-4xl md:text-5xl font-bold mb-6"
+              style={{ color: isDark ? "white" : "#101828" }}
+            >
               {gallery.title}
             </h2>
-            <p className="text-lg md:text-xl opacity-80">
+            <p
+              className="text-lg md:text-xl opacity-80"
+              style={{ color: isDark ? "white" : "#344054" }}
+            >
               {gallery.description}
             </p>
           </div>
           <div className="text-center py-12">
-            <p className="text-lg opacity-60">No images available</p>
+            <p
+              className="text-lg opacity-60"
+              style={{ color: isDark ? "white" : "#6B7280" }}
+            >
+              No images available
+            </p>
           </div>
         </div>
       </section>
@@ -210,16 +257,37 @@ export default function GallerySection(): JSX.Element | null {
         {layoutComponent}
 
         {/* Intersection Observer Target & Load More Indicator */}
-        <div ref={loadMoreRef} className="py-8 text-center">
+        <div
+          ref={loadMoreRef}
+          className="py-8 text-center"
+          style={{
+            backgroundColor: isDark ? themeColors.primary1 : "white",
+          }}
+        >
           {isLoadingMore && (
             <div className="flex flex-col items-center gap-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
-              <p className="text-sm opacity-60">Loading more images...</p>
+              <div
+                className="animate-spin rounded-full h-8 w-8 border-b-2"
+                style={{
+                  borderColor: isDark ? "white" : "#111827",
+                }}
+              ></div>
+              <p
+                className="text-sm opacity-60"
+                style={{ color: isDark ? "white" : "#4B5563" }}
+              >
+                Loading more images...
+              </p>
             </div>
           )}
 
           {!hasMore && images.length > 0 && (
-            <p className="text-sm opacity-40">No more images to load</p>
+            <p
+              className="text-sm opacity-40"
+              style={{ color: isDark ? "white" : "#6B7280" }}
+            >
+              No more images to load
+            </p>
           )}
         </div>
       </>
